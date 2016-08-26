@@ -9,6 +9,7 @@
 #include <vector>
 #include <list>
 #include <map>
+#include "min_heap.h"
 //////////////////////////////////////////////////////////////////////////
 //	accept the result points
 typedef void (*AcceptPathResult)(int, int);
@@ -37,6 +38,12 @@ struct AstarNode
 	{
 		Reset();
 	}
+	AstarNode(int _nValueG, int _nValueH)
+	{
+		Reset();
+		nValueG = _nValueG;
+		nValueH = _nValueH;
+	}
 
 	void Reset()
 	{
@@ -45,6 +52,12 @@ struct AstarNode
 		pParent = NULL;
 		m_bInUse = false;
 		bInCloseTable = bInOpenTable = false;
+		nHeapIndex = 0;
+	}
+
+	int GetValueF()
+	{
+		return nValueG + nValueH;
 	}
 
 	//	member variables
@@ -57,6 +70,8 @@ struct AstarNode
 	bool m_bInUse;
 	bool bInCloseTable;
 	bool bInOpenTable;
+
+	int nHeapIndex;
 
 	AstarNode* pParent;
 };
@@ -76,7 +91,8 @@ public:
 	virtual int GetValueH(int _nStartX, int _nStartY, int _nDestX, int _nDestY);
 	virtual int GetValueG(int _nParentX, int _nParentY, int _nX, int _nY);
 
-	bool FindPathEx(int _nStartX, int _nStartY, int _nDestX, int _nDestY, ProvideNodeBasicInfo _fnProvideNodeBasicInfo, AcceptPathResult _fnAcceptPathResult);
+	//	please use this function
+	bool FindPath(int _nRows, int _nCols, int _nStartX, int _nStartY, int _nDestX, int _nDestY, ProvideNodeBasicInfo _fnProvideNodeBasicInfo, AcceptPathResult _fnAcceptPathResult);
 
 	inline void SetEnableDiagonal(bool _bEnable)
 	{
@@ -85,13 +101,25 @@ public:
 
 protected:
 	AstarNode* AddOpenTableElement(int _x, int _y);
+	AstarNode* AddOpenTableElementEx(int _x, int _y, int _h, int _g);
+
+	bool _FindPath(int _nStartX, int _nStartY, int _nDestX, int _nDestY, ProvideNodeBasicInfo _fnProvideNodeBasicInfo, AcceptPathResult _fnAcceptPathResult);
+	bool _FindPathEx(int _nRows, int _nCols, int _nStartX, int _nStartY, int _nDestX, int _nDestY, ProvideNodeBasicInfo _fnProvideNodeBasicInfo, AcceptPathResult _fnAcceptPathResult);
 
 private:
+	//	deprecated, it is slow
 	CloseNodes m_xClosedNodes;
-	OpenNodes m_xOpenNodes;
 	AstarNodeMap m_xOpenTable;
 	AstarNodeList m_xOpenTableItems;
 	AstarNodeList m_xParentNodes;
+
+	//	using min heap, it is faster
+	NodeMinHeap m_xOpenTableHeap;
+	AstartNodeVector m_xMapNodes;
+	AstarNodeList m_xAllocateNodes;
+	int m_nMapRow;
+	int m_nMapCol;
+
 	bool m_bEnableDiagonal;
 };
 //////////////////////////////////////////////////////////////////////////
