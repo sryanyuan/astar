@@ -261,10 +261,10 @@ bool
 				if (pSelectNode->nValueG + s_nValueG[i] < pOpenedNode->nValueG) {
 					pOpenedNode->nValueG = pSelectNode->nValueG + s_nValueG[i];
 					pOpenedNode->pParent = pSelectNode;
-				}
 
-				//	rebuild
-				m_xOpenTableHeap.RebuildSlow();
+					//	rebuild
+					m_xOpenTableHeap.RebuildSlow();
+				}
 
 				continue;
 			}
