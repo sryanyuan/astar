@@ -30,6 +30,18 @@
     <ClInclude Include="min_heap.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="minheap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="test_minheap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AStarPathFinder.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="memleak_detect_fileline.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -42,6 +54,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="min_heap.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="test_minheap.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AStarPathFinder.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

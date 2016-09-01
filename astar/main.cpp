@@ -1,11 +1,15 @@
 // astar.cpp : 定义控制台应用程序的入口点。
 //
 
+#include "memleak_detect_fileline.h"
+
+#define CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
 #include "stdafx.h"
-#include "astar.h"
-#include "min_heap.h"
-
-
+#include "AStarPathFinder.h"
+#include <windows.h>
 //////////////////////////////////////////////////////////////////////////
 //	18 * 18
 const int row = 18;
@@ -36,19 +40,19 @@ int fnGetBasicInfo(int _x, int _y)
 {
 	if (_x < 0 ||
 		_x >= col) {
-		return AstarFlag_Invalid;
+		return AStarFlag_Invalid;
 	}
 	if (_y < 0 ||
 		_y >= row) {
-		return AstarFlag_Invalid;
+		return AStarFlag_Invalid;
 	}
 
 	if (charmap[_y * col + _x] == 0 ||
 		charmap[_y * col + _x] == 2) {
-		return AstarFlag_Ok;
+		return AStarFlag_Ok;
 	}
 
-	return AstarFlag_Invalid;
+	return AStarFlag_Invalid;
 }
 
 void fnAcceptResult(int _x, int _y) {
@@ -59,7 +63,7 @@ void exampleAtar()
 {
 	unsigned int tick = GetTickCount();
 
-	Astar finder;
+	AStarPathFinder finder;
 	if (!finder.FindPath(row, col, 0, 0, 17, 17, fnGetBasicInfo, fnAcceptResult)) {
 		printf("can't find path\n");
 		printf("cost %d ms\n", GetTickCount() - tick);
@@ -77,7 +81,15 @@ void exampleAtar()
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+	HMODULE hModule = LoadLibrary("user32.dll");
 	exampleAtar();
+
+#ifdef _DEBUG
+	_CrtDumpMemoryLeaks();
+#endif
+
+	FreeLibrary(hModule);
+	hModule = 0;
 
 	return 0;
 }

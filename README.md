@@ -61,7 +61,7 @@ It uses min-heap to imporve speed.
 	{
 		unsigned int tick = GetTickCount();
 	
-		Astar finder;
+		AStarPathFinder finder;
 		if (!finder.FindPath(row, col, 0, 0, 17, 17, fnGetBasicInfo, fnAcceptResult)) {
 			printf("can't find path\n");
 			printf("cost %d ms\n", GetTickCount() - tick);
